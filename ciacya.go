@@ -41,8 +41,10 @@ func main() {
 			// Include file/folder name in hash.
 			hashContent = append(hashContent, []byte(file.Name())...)
 
-			if file.IsDir() || file.Mode()&os.ModeSymlink != 0 {
+			if file.IsDir() {
 				fmt.Printf("\033[2K\r%s %s", "Processing:", file.Name())
+			} else if file.Mode()&os.ModeSymlink != 0 {
+				// Do nothing else for symlinks.
 			} else {
 				fileContents, err := ioutil.ReadFile(path)
 				if err != nil {
